@@ -25,7 +25,7 @@ public class RecibeDatos extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response, String msg)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -33,10 +33,10 @@ public class RecibeDatos extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RecibeDatos</title>");            
+            out.println("<title>Servlet RecibeDatos</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RecibeDatos at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RecibeDatos at " + msg + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -54,7 +54,20 @@ public class RecibeDatos extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        String name = request.getParameter("nombre");
+        String lastName = request.getParameter("apellido");
+        String birthdate = request.getParameter("fecha_nacimiento");
+        String cedula = request.getParameter("cedula");
+        String email = request.getParameter("correo");
+        String contrasena = request.getParameter("contrasena");
+
+        if (name.isEmpty() || lastName.isEmpty() || birthdate.isEmpty() || cedula.isEmpty() || email.isEmpty() || contrasena.isEmpty()) {
+            processRequest(request, response, "Registro incompleto");
+        } else {
+            processRequest(request, response, "Registro completo");
+        }
+
     }
 
     /**
@@ -68,7 +81,7 @@ public class RecibeDatos extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
     }
 
     /**
